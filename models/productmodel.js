@@ -23,3 +23,6 @@ const productschema=mongoose.Schema({
 const Product=mongoose.model("productmodel",productschema);
 
 module.exports=Product 
+
+
+

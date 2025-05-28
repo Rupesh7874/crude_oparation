@@ -7,14 +7,8 @@ const passport=require('passport')
 
 routs.post('/ragister',ragister)
 routs.post('/login',login)
-// routs.post('/addproduct',passport.authenticate("seller",{failureRedirect: "/api/user/failauth"}),addproduct)
 routs.post('/addproduct',verifyToken,addproduct);
-routs.post('/viewallproduct',viewallproduct)
-routs.post('/productupdate/:id',productupdate)
-routs.post('/productdelete/:id',productdelete)
-// routs.post('/adddevice',adddevice)
-
-// routs.get('/failauth',(req,res)=>{
-//     res.status(400).json({msg:"invalid token",status:0})
-// })
+routs.get('/viewallproduct',verifyToken,viewallproduct);
+routs.post('/productupdate/:id',verifyToken,productupdate);
+routs.post('/productdelete/:id',verifyToken,productdelete);
 module.exports=routs; 

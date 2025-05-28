@@ -35,10 +35,6 @@ const userschema=mongoose.Schema({
         type:String,
         required:true
     },
-    //  devices:{
-    //     type:mongoose.Schema.Types.ObjectId,
-    //     ref:"devicesmodel"
-    // },
 },{timestamps:true});
 
 
