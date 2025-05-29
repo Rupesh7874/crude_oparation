@@ -41,9 +41,11 @@ const storetoken = [];
 
 exports.login = async (req, res) => {
   try {
-    const { email, password, deviceid, devicetype } = req.body;
-
+    const { email, password, deviceid, devicetype,userid } = req.body;
+    
     const user = await usermodel.findOne({ email });
+    // console.log(user.roles);
+    
     if (!user) {
       return res.status(400).json({ msg: "Admin not found", status: 0 });
     }
@@ -54,7 +56,6 @@ exports.login = async (req, res) => {
     }
 
     const existingDevice = await devicemodel.findOne({ userid: user._id, devicetype });
-    console.log(existingDevice);
 
 
     const totalDevices = await devicemodel.countDocuments({ userid: user._id });
@@ -77,7 +78,6 @@ exports.login = async (req, res) => {
     if (storetoken.length >= 5) {
       return res.status(403).json({ msg: "max 5 token", status: 0 });
     }
-    console.log(storetoken.length);
 
     let secretKey = 'exam3';
     let expiry;
@@ -96,7 +96,7 @@ exports.login = async (req, res) => {
         return res.status(400).json({ msg: "Invalid role", status: 0 });
     }
 
-    const token = jwt.sign({ data: user}, secretKey, {
+    const token = jwt.sign({ userid: userid,role:user.roles}, secretKey, {
       expiresIn: expiry
     });
 
