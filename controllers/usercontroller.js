@@ -41,11 +41,11 @@ const storetoken = [];
 
 exports.login = async (req, res) => {
   try {
-    const { email, password, deviceid, devicetype,userid } = req.body;
-    
+    const { email, password, deviceid, devicetype, userid } = req.body;
+
     const user = await usermodel.findOne({ email });
     // console.log(user.roles);
-    
+
     if (!user) {
       return res.status(400).json({ msg: "Admin not found", status: 0 });
     }
@@ -96,7 +96,7 @@ exports.login = async (req, res) => {
         return res.status(400).json({ msg: "Invalid role", status: 0 });
     }
 
-    const token = jwt.sign({ userid: userid,role:user.roles}, secretKey, {
+    const token = jwt.sign({ userid: userid, role: user.roles }, secretKey, {
       expiresIn: expiry
     });
 
@@ -118,5 +118,38 @@ exports.login = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Error in login process", status: 0 });
+  }
+};
+
+
+exports.getalluser = async (req, res) => {
+  try {
+
+    //  const aa = await usermodel.aggregate([
+    //   {$sortByCount:"$roles"}
+    // ]);
+
+
+    // const aa = await usermodel.aggregate([
+    //   { $match : {age : {$gt:'20'}}},
+    //   {$sort:{age:1,name:1}},
+    //   {$project:{name:1,email:1,roles:1,age:1,_id:0 }},
+    //   {$skip:3},
+    //   {$limit:2}
+    // ]);
+
+    const aa = await usermodel.aggregate([
+      {
+        $group: {
+          _id: '$roles',
+          count:{$sum:1}
+        }
+      }
+    ])
+    console.log(aa);
+    res.status(200).json({ status: 1, users: aa });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error in fetching users", status: 0 });
   }
 };

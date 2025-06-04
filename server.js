@@ -15,26 +15,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extends: true }))
 
 const server = createServer(app);
-const io = new Server(server,{
-   cors: {
-    origin: '*',
-  }
-});
+const io = new Server(server);
 
 
 io.on('connection', (socket) => {
   console.log('a user connected', socket.id);
-  socket.emit(`welcome','Hello from server!,${socket.id}`);
-
-  socket.on("message", (message) => {
+  
+  socket.join("Room1")
+  console.log(`${socket.id} a user join Room1`);
+  
+  
+  socket.on("receivemessage", (message) => {
     console.log(message, socket.id);
-
+    socket.to("Room1").emit('message',`${socket.id}: ${message}`);
   })
 
   socket.on('disconnecting', () => {
     console.log("user disconnect");
   })
-
 });
 
 
