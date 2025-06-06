@@ -1,6 +1,6 @@
 const express=require('express');
 const routs=express.Router();
-const {ragister,login,adddevice,getalluser}=require('../controllers/usercontroller')
+const {ragister,login,adddevice,getalluser,viewalldevice}=require('../controllers/usercontroller')
 const {addproduct,viewallproduct,productupdate,productdelete}=require('../controllers/productcontroller');
 const {verifyToken,checkSellerRole} = require('../confige/auth');
 const passport=require('passport')
@@ -12,4 +12,5 @@ routs.get('/viewallproduct',verifyToken,viewallproduct);
 routs.post('/productupdate/:id',verifyToken,productupdate);
 routs.post('/productdelete/:id',verifyToken,productdelete);
 routs.get('/getalluser',getalluser);
+routs.get('/viewalldevice',viewalldevice);
 module.exports=routs; 
